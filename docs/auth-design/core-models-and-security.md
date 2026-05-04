@@ -1,0 +1,11 @@
+# Core Models and Advanced Security
+- User: id, email, username, password_hash, status, mfa_enabled, created_at, updated_at.
+- MfaFactor: id, user_id, type (totp/webauthn), secret, is_verified, created_at.
+- OAuthAccount: id, user_id, provider, provider_user_id, access_token.
+- Role: id, name, description.
+- Permission: id, resource, action, scope, description.
+- UserRole / RolePermission / UserPermission: relation tables and overrides.
+- Policy / PolicyRule: attribute-based access control (ABAC).
+- Session: id, user_id, device_fingerprint, ip_address, geolocation, is_suspicious, issued_at, expires_at.
+- Device: id, user_id, user_agent, fingerprint, last_seen_ip, is_trusted.
+- AuditLog: id, correlation_id, actor_id, action, resource, target_id, metadata, timestamp.

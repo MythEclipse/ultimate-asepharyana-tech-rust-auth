@@ -1,0 +1,13 @@
+# Advanced Techniques and Optimization Strategies
+- Zero-downtime cache invalidation: RoleUpdated event triggers L1 and L2 cache invalidation across all nodes.
+- Argon2id parameter tuning: adjust memory and iterations to resist GPU attacks while staying responsive.
+- Asymmetric token signing (JWKS): ECDSA (P-256) or EdDSA (Ed25519) for efficient distributed token validation.
+- Database connection pooling: bb8 or deadpool for PostgreSQL, with read replicas for audit and policy.
+- Step-up auth and risk-based MFA: raise auth level on high-risk signals (device changes, IP anomalies).
+- Token binding: DPoP or mTLS to prevent token replay across devices.
+- Rotating refresh tokens: reuse detection, revoke chain, and session pinning.
+- KMS/HSM key management: periodic key rotation, key auditing, and kid versioning.
+- Tamper-evident audit: append-only logs with hash chaining and WORM storage.
+- Outbox pattern for audit events: ensure transaction consistency and idempotency.
+- Circuit breaker and backpressure: protect dependencies (DB, broker) during spikes.
+- Multi-tenant isolation: schema-per-tenant or row-level security for data and policy.
