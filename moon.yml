@@ -1,0 +1,46 @@
+# https://moonrepo.dev/docs/config/project
+$schema: "https://moonrepo.dev/schemas/project.json"
+
+language: "rust"
+tags:
+  - "lang/rust"
+  - "type/backend"
+
+fileGroups:
+  sources:
+    - "src/**/*.rs"
+    - "Cargo.toml"
+    - "Cargo.lock"
+
+tasks:
+  build:
+    command: "cargo build --release"
+    inputs:
+      - "@sources"
+    outputs:
+      - "target/release/*"
+    options:
+      cache: true
+  dev:
+    command: "cargo run"
+    options:
+      cache: false
+  test:
+    command: "cargo test"
+    inputs:
+      - "@sources"
+      - "tests/**/*"
+    options:
+      cache: false
+  lint:
+    command: "cargo clippy -- -D warnings"
+    inputs:
+      - "@sources"
+    options:
+      cache: false
+  fmt-check:
+    command: "cargo fmt --check"
+    inputs:
+      - "src/**/*.rs"
+    options:
+      cache: false
