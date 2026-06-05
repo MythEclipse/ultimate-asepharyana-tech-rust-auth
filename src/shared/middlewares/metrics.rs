@@ -15,15 +15,12 @@ use opentelemetry::{
     KeyValue,
 };
 use opentelemetry_otlp::WithExportConfig;
-use opentelemetry_sdk::{
-    metrics::{MeterProviderBuilder, PeriodicReader},
-    Resource,
-};
-use opentelemetry_semantic_conventions::resource::SERVICE_NAME as ATTR_SERVICE_NAME;
+use opentelemetry_sdk::{metrics::MeterProviderBuilder, metrics::PeriodicReader, Resource};
 use std::sync::OnceLock;
 use std::time::Instant;
 
 static METER: OnceLock<Meter> = OnceLock::new();
+static PROVIDER: OnceLock<opentelemetry_sdk::metrics::SdkMeterProvider> = OnceLock::new();
 
 fn meter() -> &'static Meter {
     METER.get().expect("OTel meter not initialized — call init_otel_metrics first")
@@ -32,6 +29,10 @@ fn meter() -> &'static Meter {
 /// Initialize the global OTLP MeterProvider.
 /// Safe to call multiple times — subsequent calls are no-ops.
 pub fn init_otel_metrics() {
+    if METER.get().is_some() {
+        return;
+    }
+
     let otel_endpoint =
         std::env::var("OTEL_EXPORTER_OTLP_ENDPOINT").unwrap_or_else(|_| "http://localhost:4317".into());
     let service_name =
@@ -51,15 +52,16 @@ pub fn init_otel_metrics() {
         .with_interval(std::time::Duration::from_millis(export_interval_ms))
         .build();
 
-    let resource = Resource::builder()
-        .with_attribute(KeyValue::new(ATTR_SERVICE_NAME, service_name.clone()))
-        .build();
+    let resource = Resource::new(vec![
+        KeyValue::new("service.name", service_name.clone()),
+    ]);
 
     let provider = MeterProviderBuilder::default()
         .with_resource(resource)
         .with_reader(reader)
         .build();
 
+    let _ = PROVIDER.set(provider.clone());
     global::set_meter_provider(provider);
 
     let m = global::meter("rust-auth-http-server");
@@ -70,11 +72,12 @@ pub fn init_otel_metrics() {
 
 /// Shut down the global MeterProvider, flushing pending exports.
 pub async fn shutdown_otel_metrics() {
-    let provider = global::meter_provider();
-    if let Err(e) = provider.shutdown() {
-        tracing::warn!(error = %e, "OTel metrics shutdown error");
-    } else {
-        tracing::info!("OTel metrics shut down");
+    if let Some(provider) = PROVIDER.get() {
+        if let Err(e) = provider.shutdown() {
+            tracing::warn!(error = %e, "OTel metrics shutdown error");
+        } else {
+            tracing::info!("OTel metrics shut down");
+        }
     }
 }
 
@@ -98,7 +101,13 @@ pub async fn otel_metrics_middleware(req: Request, next: Next) -> Response {
     let counter = request_counter();
     let duration = duration_histogram();
 
-    in_flight.add(1, &[KeyValue::new("method", &method), KeyValue::new("path", &path)]);
+    in_flight.add(
+        1,
+        &[
+            KeyValue::new("method", method.clone()),
+            KeyValue::new("path", path.clone()),
+        ],
+    );
 
     let start = Instant::now();
     let response = next.run(req).await;
@@ -106,9 +115,9 @@ pub async fn otel_metrics_middleware(req: Request, next: Next) -> Response {
 
     let status = response.status().as_u16().to_string();
     let attrs = [
-        KeyValue::new("method", &method),
-        KeyValue::new("path", &path),
-        KeyValue::new("status", &status),
+        KeyValue::new("method", method),
+        KeyValue::new("path", path),
+        KeyValue::new("status", status),
     ];
     counter.add(1, &attrs);
     duration.record(elapsed_ms, &attrs);
@@ -121,9 +130,9 @@ fn in_flight_counter() -> UpDownCounter<i64> {
     static INST: OnceLock<UpDownCounter<i64>> = OnceLock::new();
     INST.get_or_init(|| {
         meter()
-            .create_up_down_counter("http.server.request_in_flight")
+            .i64_up_down_counter("http.server.request_in_flight")
             .with_description("Number of HTTP requests currently in flight")
-            .init()
+            .build()
     })
     .clone()
 }
@@ -132,9 +141,9 @@ fn request_counter() -> Counter<u64> {
     static INST: OnceLock<Counter<u64>> = OnceLock::new();
     INST.get_or_init(|| {
         meter()
-            .create_counter("http.server.request_count")
+            .u64_counter("http.server.request_count")
             .with_description("Total number of HTTP requests received")
-            .init()
+            .build()
     })
     .clone()
 }
@@ -143,10 +152,10 @@ fn duration_histogram() -> Histogram<f64> {
     static INST: OnceLock<Histogram<f64>> = OnceLock::new();
     INST.get_or_init(|| {
         meter()
-            .create_histogram("http.server.request_duration_ms")
+            .f64_histogram("http.server.request_duration_ms")
             .with_description("Duration of HTTP requests in milliseconds")
             .with_unit("ms")
-            .init()
+            .build()
     })
     .clone()
 }
