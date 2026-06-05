@@ -1,0 +1,3 @@
+{"type":"tool_failure","tool":"Read","error":"EISDIR: illegal operation on a directory, read '/mnt/code/bp3/ultimate-asepharyana.tech/apps/scraper'","id":"tool_failure-1780654353422-c4mobi","timestamp":"2026-06-05T10:12:33.422Z","resolved":false}
+{"type":"tool_failure","tool":"Read","error":"EISDIR: illegal operation on a directory, read '/mnt/code/bp3/ultimate-asepharyana.tech/apps/scraper/src/shared/errors'","id":"tool_failure-1780654386026-sc2jlv","timestamp":"2026-06-05T10:13:06.026Z","resolved":false}
+{"type":"tool_failure","tool":"Read","error":"EISDIR: illegal operation on a directory, read '/mnt/code/bp3/ultimate-asepharyana.tech/apps/scraper/src/shared/state'","id":"tool_failure-1780654399386-6r1zat","timestamp":"2026-06-05T10:13:19.386Z","resolved":false}
