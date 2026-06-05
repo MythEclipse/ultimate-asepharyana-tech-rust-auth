@@ -1,2 +1,7 @@
-.env
 target/
+.env
+*.swp
+*.swo
+.DS_Store
+**/.codegraph/**
+**/.claude/**
