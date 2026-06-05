@@ -55,6 +55,10 @@ anyhow = "1"
 # Async
 futures = "0.3"
 
+# Hashing
+sha2 = "0.10"
+hex = "0.4"
+
 # Regex
 regex = "1"
 
