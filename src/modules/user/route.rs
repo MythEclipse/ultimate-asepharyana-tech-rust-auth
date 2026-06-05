@@ -11,5 +11,5 @@ pub fn routes() -> Router<Arc<crate::shared::state::AppState>> {
         .route("/api/v1/users/me", delete(controller::delete_account))
         .route("/api/v1/users/change-password", put(controller::change_password))
         .route("/api/v1/users", get(controller::list_users))
-        .route("/api/v1/users/:id", get(controller::get_user_by_id))
+        .route("/api/v1/users/{id}", get(controller::get_user_by_id))
 }
