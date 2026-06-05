@@ -67,5 +67,5 @@ prometheus = { version = "0.13", features = ["process"] }
 axum-prometheus = "0.7"
 
 [dev-dependencies]
-http-body-util = "1"
+http-body-util = "0.1"
 tower-test = "0.5"
