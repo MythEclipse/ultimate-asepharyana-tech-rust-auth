@@ -66,6 +66,12 @@ regex = "1"
 prometheus = { version = "0.13", features = ["process"] }
 axum-prometheus = "0.7"
 
+# OpenTelemetry metrics
+opentelemetry = { version = "0.27", features = ["metrics"] }
+opentelemetry_sdk = { version = "0.27", features = ["metrics", "rt-tokio"] }
+opentelemetry-otlp = { version = "0.27", features = ["metrics"] }
+opentelemetry-semantic-conventions = "0.27"
+
 [dev-dependencies]
 http-body-util = "0.1"
 tower-test = "0.4"

@@ -30,6 +30,9 @@ impl Application {
             .with_thread_ids(true)
             .init();
 
+        // Initialize OpenTelemetry metrics
+        crate::shared::middlewares::metrics::init_otel_metrics();
+
         info!("{} v{} starting up", config.app.name, "0.1.0");
         info!("Environment: {}", config.app.environment);
 
@@ -72,6 +75,9 @@ impl Application {
             )
             // Global middleware stack
             .layer(TraceLayer::new_for_http())
+            .layer(axum::middleware::from_fn(
+                crate::shared::middlewares::metrics::otel_metrics_middleware,
+            ))
             .layer(cors_layer())
             .with_state(self.state.clone())
     }
