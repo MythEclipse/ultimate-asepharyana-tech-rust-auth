@@ -9,8 +9,8 @@ use crate::shared::state::AppState;
 use crate::shared::utils::jwt;
 use crate::shared::utils::password;
 use crate::shared::utils::validation;
+use deadpool_redis::redis::AsyncCommands;
 use sha2::{Digest, Sha256};
-use std::sync::Arc;
 use uuid::Uuid;
 
 #[derive(Debug, Clone)]
@@ -151,11 +151,9 @@ impl AuthService {
 
         // Remove old session from Redis
         let old_key = format!("session:{}", session.id);
-        let _: Result<(), _> = state.redis.get().await.map(|mut conn| {
-            let _: Result<(), _> = redis::cmd("DEL")
-                .arg(&old_key)
-                .query_async(&mut *conn);
-        });
+        if let Ok(mut conn) = state.redis.get().await {
+            let _: Result<(), _> = conn.del::<_, ()>(&old_key).await;
+        }
 
         // Create new session
         let (new_session, new_access_token, new_refresh_token) = self
@@ -183,13 +181,11 @@ impl AuthService {
         if let Some(session) = session {
             self.repo.revoke_session(session.id).await?;
 
-            // Remove from Redis
+        // Remove from Redis
             let session_key = format!("session:{}", session.id);
-            let _: Result<(), _> = state.redis.get().await.map(|mut conn| {
-                let _: Result<(), _> = redis::cmd("DEL")
-                    .arg(&session_key)
-                    .query_async(&mut *conn);
-            });
+            if let Ok(mut conn) = state.redis.get().await {
+                let _: Result<(), _> = conn.del::<_, ()>(&session_key).await;
+            }
         }
 
         Ok(MessageResponse {
@@ -205,7 +201,7 @@ impl AuthService {
         user: &User,
         ip_address: Option<&str>,
         user_agent: Option<&str>,
-        state: &AppState,
+        _state: &AppState,
     ) -> Result<(crate::modules::auth::entity::Session, String, String), AppError> {
         let session_id = Uuid::new_v4();
         let access_token = jwt::create_access_token(&user.id, &user.email, &session_id, &user.role)?;
@@ -230,13 +226,9 @@ impl AuthService {
             .map_err(|_| AppError::InternalError("Redis connection failed".into()))?;
 
         let session_key = format!("session:{}", session.id);
-        let ttl = state.config.jwt.access_expiration as usize;
+        let ttl = state.config.jwt.access_expiration as u64;
 
-        let _: Result<(), _> = redis::cmd("SETEX")
-            .arg(&session_key)
-            .arg(ttl)
-            .arg(access_token)
-            .query_async(&mut *conn)
+        conn.set_ex::<_, _, ()>(&session_key, access_token, ttl)
             .await
             .map_err(|_| AppError::InternalError("Redis cache set failed".into()))?;
 

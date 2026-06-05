@@ -108,7 +108,7 @@ mod tests {
     fn test_password_validation() {
         assert!(validate_password("Abcdef1!").is_ok());
         assert!(validate_password("Pass1234!Strong").is_ok());
-        assert!(validate_password("short1A!").is_err()); // < 8
+        assert!(validate_password("Shrt1A!").is_err()); // < 8
         assert!(validate_password("nouppercase1!").is_err());
         assert!(validate_password("NOLOWERCASE1!").is_err());
         assert!(validate_password("NoDigits!@").is_err());

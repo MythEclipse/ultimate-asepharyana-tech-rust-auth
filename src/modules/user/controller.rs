@@ -4,9 +4,8 @@ use crate::modules::user::schema::{
 };
 use crate::modules::user::service::UserService;
 use crate::shared::errors::AppError;
-use crate::shared::middlewares::tracing::CorrelationId;
+use crate::shared::middlewares::auth::Claims;
 use crate::shared::state::AppState;
-use crate::shared::utils::jwt::Claims;
 use axum::extract::{Path, Query, State};
 use axum::Json;
 use serde::Deserialize;

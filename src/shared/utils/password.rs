@@ -3,7 +3,6 @@ use argon2::{
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Argon2,
 };
-use tracing::info;
 
 /// Hashes a password using Argon2id.
 pub fn hash_password(password: &str) -> Result<String> {

@@ -20,10 +20,9 @@ pub async fn register(
     let repo = AuthRepository::new(state.db.clone());
     let service = AuthService::new(repo);
 
-    let user_agent = None; // Extracted from headers if needed
-    let ip = Some(addr.ip().to_string().as_str());
+    let ip_str = addr.ip().to_string();
 
-    let response = service.register(&state, req, ip, user_agent).await?;
+    let response = service.register(&state, req, Some(&ip_str), None).await?;
     Ok(Json(response))
 }
 
@@ -36,9 +35,9 @@ pub async fn login(
     let repo = AuthRepository::new(state.db.clone());
     let service = AuthService::new(repo);
 
-    let ip = Some(addr.ip().to_string().as_str());
+    let ip_str = addr.ip().to_string();
 
-    let response = service.login(&state, req, ip, None).await?;
+    let response = service.login(&state, req, Some(&ip_str), None).await?;
     Ok(Json(response))
 }
 

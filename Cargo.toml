@@ -8,7 +8,7 @@ description = "Enterprise IAM and authentication service with modular MVC archit
 # Web framework
 axum = { version = "0.8", features = ["macros", "multipart", "json"] }
 tokio = { version = "1", features = ["full"] }
-tower-http = { version = "0.6", features = ["cors", "trace", "compression", "request-id"] }
+tower-http = { version = "0.6", features = ["cors", "trace", "request-id"] }
 tower = { version = "0.5", features = ["util"] }
 
 # Serialization
@@ -42,7 +42,7 @@ dotenvy = "0.15"
 
 # Cache
 redis = { version = "0.28", features = ["tokio-rustls-comp"] }
-deadpool-redis = "0.20"
+deadpool-redis = "0.19"
 
 # Logging/Tracing
 tracing = "0.1"
@@ -68,4 +68,4 @@ axum-prometheus = "0.7"
 
 [dev-dependencies]
 http-body-util = "0.1"
-tower-test = "0.5"
+tower-test = "0.4"

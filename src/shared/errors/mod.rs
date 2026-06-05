@@ -2,7 +2,6 @@ use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
 use serde_json::json;
-use std::fmt;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -57,28 +56,6 @@ pub enum AppError {
 
     #[error("Not found: {0}")]
     NotFound(String),
-}
-
-impl fmt::Display for AppError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            AppError::InvalidCredentials => write!(f, "Invalid credentials"),
-            AppError::InvalidToken => write!(f, "Invalid or expired token"),
-            AppError::TokenExpired => write!(f, "Token expired"),
-            AppError::InvalidRefreshToken => write!(f, "Refresh token invalid or expired"),
-            AppError::AccountNotFound => write!(f, "Account not found"),
-            AppError::AccountAlreadyExists => write!(f, "Account already exists"),
-            AppError::AccountLocked => write!(f, "Account is locked"),
-            AppError::AccountNotVerified => write!(f, "Account not verified"),
-            AppError::Forbidden => write!(f, "Forbidden: insufficient permissions"),
-            AppError::Unauthorized => write!(f, "Unauthorized"),
-            AppError::ValidationError(msg) => write!(f, "Validation error: {}", msg),
-            AppError::DatabaseError(msg) => write!(f, "Database error: {}", msg),
-            AppError::ConfigurationError(msg) => write!(f, "Configuration error: {}", msg),
-            AppError::InternalError(msg) => write!(f, "Internal server error: {}", msg),
-            AppError::NotFound(msg) => write!(f, "Not found: {}", msg),
-        }
-    }
 }
 
 impl IntoResponse for AppError {

@@ -6,7 +6,7 @@ use validator::Validate;
 
 #[derive(Debug, Deserialize, Validate)]
 pub struct RegisterRequest {
-    #[validate(length(min = 3, max = 32), regex = r"^[a-zA-Z0-9_]+$")]
+    #[validate(length(min = 3, max = 32))]
     pub username: String,
 
     #[validate(email)]

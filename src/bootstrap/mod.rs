@@ -2,10 +2,11 @@ use crate::modules::auth::route as auth_route;
 use crate::modules::user::route as user_route;
 use crate::shared::config::AppConfig;
 use crate::shared::database;
+use crate::shared::middlewares::auth;
 use crate::shared::middlewares::cors::cors_layer;
 use crate::shared::state::AppState;
 use anyhow::Result;
-use axum::Router;
+use axum::{middleware, Router};
 use deadpool_redis::Config as RedisConfig;
 use std::sync::Arc;
 use tokio::net::TcpListener;
@@ -31,7 +32,6 @@ impl Application {
 
         info!("{} v{} starting up", config.app.name, "0.1.0");
         info!("Environment: {}", config.app.environment);
-        info!("Database host configured");
 
         // Initialize database pool
         let db_pool = database::init_pool().await?;
@@ -39,7 +39,7 @@ impl Application {
         // Initialize Redis pool
         let redis_cfg = RedisConfig::from_url(&config.redis.url);
         let redis_pool = redis_cfg
-            .create_pool(Some(config.redis.pool_size))
+            .create_pool(None::<deadpool_redis::Runtime>)
             .map_err(|e| anyhow::anyhow!("Failed to create Redis pool: {}", e))?;
 
         // Verify Redis connection
@@ -59,13 +59,17 @@ impl Application {
     }
 
     pub fn router(&self) -> Router {
-        let config = AppConfig::global();
-
         Router::new()
-            // Auth routes (public)
+            // Auth routes (public - no auth middleware)
             .merge(auth_route::routes())
-            // User routes (protected)
-            .merge(user_route::routes(self.state.clone()))
+            // User routes with auth middleware
+            .merge(
+                user_route::routes()
+                    .route_layer(middleware::from_fn_with_state(
+                        self.state.clone(),
+                        auth::auth_middleware,
+                    )),
+            )
             // Global middleware stack
             .layer(TraceLayer::new_for_http())
             .layer(cors_layer())

@@ -91,3 +91,292 @@ error: failed to select a version for the requirement `http-body-util = "^1"`
 candidate versions found which didn't match: 0.1.3, 0.1.2, 0.1.1, ...
 location 
 [10:21:25] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/Cargo.toml
+[10:21:30] PROMPT: Write a 1-line conventional commit message summarizing these staged changes. Output ONLY the raw commit message, no markdown.
+diff --git a/.
+[10:21:32] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for the requirement `tower-test = "^0.5"`
+candidate versions found which didn't match: 0.4.0, 0.3.0, 0.3.0-alpha.2, ...
+loc
+[10:21:36] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/Cargo.toml
+[10:21:41] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for `tower-http`.
+    ... required by package `rust-auth v0.1.0 (/mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth)`
+v
+[10:21:47] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for `tower-http`.
+    ... required by package `rust-auth v0.1.0 (/mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth)`
+v
+[10:21:51] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for `tower-http`.
+    ... required by package `rust-auth v0.1.0 (/mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth)`
+v
+[10:22:48] FAIL [Bash]: Exit code 101
+error: failed to parse manifest at `/tmp/test-cargo/Cargo.toml`
+
+Caused by:
+  no targets specified in the manifest
+  either src/lib.rs, src/main.rs, a [lib] section, or [[bin]] section m
+[10:23:05] GIT COMMIT: cat > /tmp/test-cargo/Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tower-http = { version = "0.6", features = ["cors", "trace"] }
+EOF
+cd /tmp/test-cargo && rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:23:24] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for `tower-http`.
+    ... required by package `test v0.1.0 (/tmp/test-cargo)`
+versions that meet the requirements `^0.6` ar
+[10:23:29] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tower-http = "0.6"
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:23:35] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for `tower-http`.
+    ... required by package `test v0.1.0 (/tmp/test-cargo)`
+versions that meet the requirements `^0.6` ar
+[10:23:41] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.8"
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:23:46] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.8"
+tower-http = "0.6"
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:23:52] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.8"
+tower-http = { version = "0.6", features = ["cors"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:23:57] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = { version = "0.8", features = ["macros", "multipart", "json"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:24:04] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = { version = "0.8", features = ["macros", "multipart", "json"] }
+tower-http = { version = "0.6", features = ["cors"] }
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "json", "migrate"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:24:10] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for `tower-http`.
+    ... required by package `test v0.1.0 (/tmp/test-cargo)`
+versions that meet the requirements `^0.6` ar
+[10:24:16] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["cors"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:24:22] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for `tower-http`.
+    ... required by package `test v0.1.0 (/tmp/test-cargo)`
+versions that meet the requirements `^0.6` ar
+[10:24:27] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.6", features = ["cors"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1
+[10:24:33] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+error: failed to select a version for `tower-http`.
+    ... required by package `test v0.1.0 (/tmp/test-cargo)`
+versions that meet the requirements `^0.6` ar
+[10:24:41] GIT COMMIT: cd /tmp/test-cargo && for feat in "cors" "trace" "compression" "request-id"; do
+  cat > Cargo.toml << EOF
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.6", features = ["$feat"] }
+EOF
+  echo -n "Feature '$feat': "
+  rm -f Cargo.lock && cargo generate-lockfile 2>&1 | grep -q "error" && echo "FAIL" || echo "OK"
+done
+[10:24:46] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/Cargo.toml
+[10:25:13] FAIL [Bash]: Exit code 101
+    Updating crates.io index
+     Locking 376 packages to latest Rust 1.92.0 compatible versions
+      Adding axum-prometheus v0.7.0 (available: v0.10.0)
+      Adding deadpool-redis v0.2
+[10:25:41] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/Cargo.toml
+[10:26:01] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/auth/schema.rs
+[10:26:22] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/auth/service.rs
+[10:26:28] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/auth/service.rs
+[10:26:33] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/auth/service.rs
+[10:26:41] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/auth/service.rs
+[10:26:53] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/middlewares/auth.rs
+[10:27:05] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/middlewares/rate_limit.rs
+[10:27:11] FAIL [Bash]: Exit code 101
+    Checking rust-auth v0.1.0 (/mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth)
+warning: unused import: `crate::shared::middlewares::tracing::CorrelationId`
+ --> src/modules/user/
+[10:27:58] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/errors/mod.rs
+[10:28:09] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/middlewares/tracing.rs
+[10:28:39] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/auth/controller.rs
+[10:28:44] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/auth/service.rs
+[10:28:54] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+deadpool-redis = "0.23"
+redis = "0.28"
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1 && cargo tree 2>&1 | grep redis
+[10:29:02] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+deadpool-redis = "0.22"
+redis = { version = "0.28", features = ["tokio-rustls-comp"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1 && cargo tree 2>&1 | grep redis
+[10:29:07] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+deadpool-redis = "0.20"
+redis = { version = "0.28", features = ["tokio-rustls-comp"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1 && cargo tree 2>&1 | grep redis
+[10:29:15] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+deadpool-redis = "0.20"
+redis = { version = "0.29", features = ["tokio-rustls-comp"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1 && cargo tree 2>&1 | grep redis
+[10:29:21] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+deadpool-redis = "0.19"
+redis = { version = "0.25", features = ["tokio-rustls-comp"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1 && cargo tree 2>&1 | grep redis
+[10:29:26] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+deadpool-redis = "0.19"
+redis = { version = "0.28", features = ["tokio-rustls-comp"] }
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1 && cargo tree 2>&1 | grep redis
+[10:29:35] GIT COMMIT: cd /tmp/test-cargo && cat > Cargo.toml << 'EOF'
+[package]
+name = "test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+deadpool-redis = "0.19"
+EOF
+rm -f Cargo.lock && cargo generate-lockfile 2>&1 && cargo tree -p deadpool-redis --depth 1 2>&1
+[10:29:47] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/Cargo.toml
+[10:30:08] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/middlewares/auth.rs
+[10:30:16] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/user/controller.rs
+[10:30:22] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/user/route.rs
+[10:30:31] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/bootstrap/mod.rs
+[10:31:07] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/middlewares/auth.rs
+[10:32:15] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/bootstrap/mod.rs
+[10:32:34] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/middlewares/auth.rs
+[10:32:51] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/bootstrap/mod.rs
+[10:33:55] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/bootstrap/mod.rs
+[10:34:12] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/user/route.rs
+[10:34:19] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/utils/password.rs
+[10:34:38] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/modules/auth/service.rs
+[10:35:12] FAIL [Bash]: Exit code 101
+ Downloading crates ...
+  Downloaded tower-test v0.4.0
+   Compiling unicode-ident v1.0.24
+   Compiling cfg-if v1.0.4
+   Compiling once_cell v1.21.4
+   Compiling pin-project-lite v0.2.17
+[10:35:49] WRITE: /mnt/code/bp3/ultimate-asepharyana.tech/apps/rust-auth/src/shared/utils/validation.rs
+[10:37:47] TASK done: 
+[10:37:49] PROMPT: Write a 1-line conventional commit message summarizing these staged changes. Output ONLY the raw commit message, no markdown.
+diff --git a/.
+[10:38:04] PROMPT: Write a 1-line conventional commit message summarizing these staged changes. Output ONLY the raw commit message, no markdown.
+diff --git a/.
+[10:38:04] AGENT STOP: 
