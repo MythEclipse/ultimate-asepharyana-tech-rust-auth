@@ -98,7 +98,7 @@ impl AppConfig {
                 access_expiration: 900,   // 15 minutes
                 refresh_expiration: 604800, // 7 days
                 issuer: "rust-auth".to_string(),
-                audience: "asepharyana.tech".to_string(),
+                audience: "asepharyana.my.id".to_string(),
             },
             observability: ObservabilitySettings {
                 rust_log: std::env::var("RUST_LOG")
