@@ -1,6 +1,6 @@
 //! OpenTelemetry metrics initialization and HTTP middleware for rust-auth.
 //!
-//! Uses OTLP gRPC export to the rust-otlp-metrics-backend.
+//! Uses OTLP gRPC export for OpenTelemetry metrics.
 //! Coexists with the existing Prometheus /metrics endpoint.
 //!
 //! Environment:
